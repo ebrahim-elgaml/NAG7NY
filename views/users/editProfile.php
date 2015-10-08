@@ -18,6 +18,27 @@
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<title>Edit Profile</title>
+		   <?php
+		        if (!isset($_SESSION['user'])) {
+		            header("Location: ../projects/");
+		            return;
+		        }
+		    ?>
+		<script type="text/javascript">
+			function readURL(input) {
+		        if (input.files && input.files[0]) {
+		            var reader = new FileReader();
+		            reader.onload = function (e) {
+		                $('#image-show')
+		                    .attr('src', e.target.result)
+		                    .width(100)
+		                    .height(100);
+		            };
+
+		            reader.readAsDataURL(input.files[0]);
+		        }
+		    }
+    	</script>
 	</head>
 	<body>
 		<?php
@@ -53,30 +74,30 @@
 			<h1>Edit Profile</h1>
 			<hr>
 			<form class="form-horizontal" id="editProfile" action="<?php changeUserInfo(); ?>" method="post" enctype="multipart/form-data">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="text-center">
-						<?php 
-						if(isset($_SESSION['user'])) {
-							$sql = "select * from user where id = '{$_SESSION['user']}'";
-							$result = mysqli_query($db,$sql);
-							$row = $result->fetch_array();
-						    $email = $row['email'] ; 
-							if(file_exists('../../uploads/'.$email.'.jpg')) {
-					    		echo '<img src="../../uploads/'.$email.'.jpg" class="avatar img-circle img-responsive" alt="avatar" >';
+				<div class="row">
+					<div class="col-md-3">
+						<div class="text-center">
+							<?php 
+								if(isset($_SESSION['user'])) {
+									$sql = "select * from user where id = '{$_SESSION['user']}'";
+									$result = mysqli_query($db,$sql);
+									$row = $result->fetch_array();
+								    $email = $row['email'] ; 
+									if(file_exists('../../uploads/'.$email.'.jpg')) {
+							    		echo '<img id = "image-show" src="../../uploads/'.$email.'.jpg" class="avatar img-circle img-responsive" alt="avatar" >';
+										
+							        } else {
+							            echo '<img id = "image-show" src="//placehold.it/100" class="avatar img-circle" alt="avatar">';
 								
-					        } else {
-					            echo '<img src="//placehold.it/100" class="avatar img-circle" alt="avatar">';
-						
-					        }
-						}
-						?>
-						<h6>Upload a different photo...</h6>
-						<input type="file" name="image" id="image" class="form-control">
+							        }
+								}
+							?>
+							<h6>Upload a different photo...</h6>
+							<input type="file" name="image" id="image" class="form-control" onchange="readURL(this);">
+						</div>
 					</div>
-				</div>
-				<div class="col-md-9 personal-info">
-					<h3>Personal info</h3>
+					<div class="col-md-9 personal-info">
+						<h3>Personal info</h3>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">First name:</label>
 							<div class="col-lg-8">
@@ -96,18 +117,23 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-3 control-label">Password:</label>
-							<div class="col-md-8">
+							<label class="col-lg-3 control-label">Credit Card Number:</label>
+							<div class="col-lg-8">
+								<input name="credit_card" id="credit_card" class="form-control" type="number" value="<?php echo $user_info['credit_card'] ?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">Password:</label>
+							<div class="col-lg-8">
 								<input name="password" id="password" class="form-control" type="password" value="">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-3 control-label">Password Confirmation:</label>
-							<div class="col-md-8">
+							<label class="col-lg-3 control-label">Password Confirmation:</label>
+							<div class="col-lg-8">
 								<input name="passwordconfirmation" id="passwordconfirmation" class="form-control" type="password" value="">
 							</div>
 						</div>
-						
 						<div class="form-group">
 							<label class="col-md-3 control-label">
 							</label>

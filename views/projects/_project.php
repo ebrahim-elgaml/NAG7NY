@@ -14,7 +14,7 @@
             <p><?php echo substr($var['description'],0,63)."..."; ?></p>
         </div>
         <div class="ratings">
-            <p class="pull-right"><?php echo $var['count']; ?> Availabe</p>
+            <p class="pull-right <?php echo 'project-count-'.$var['id'] ?>"><?php if($sold_out==true){ echo "Sold Out";}else{echo $var['count']." Available";} ?></p>
             <p>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
@@ -34,16 +34,17 @@
           </div>
           <div class="modal-body">
             <span class="pull-right"><a href="#">$ <?php echo $var['price']; ?></a></span>
-            <span><a href="#"><?php echo $var['count']; ?> Available</a></span>
+            <span><a href="#" class="<?php echo 'project-count-'.$var['id'] ?>"><?php if($sold_out==true){ echo "Sold Out";}else{echo $var['count']." Available";} ?></a></span>
             <h3 class="form col-md-12 center-block text-decore">
                 <?php echo $var['description']; ?>
             </h3>
-            <form  method="post" remote= true id = "<?php echo $var['id'];?>" class="cart">
-              <input type="hidden" name="project_id" value="<?php echo $var['id']; ?>">
+            <?php if(!$sold_out){
+              echo '<form  method="post" remote= true id = "'.$var['id'].'"" class="cart">
+              <input type="hidden" name="project_id" value="'.$var['id'].'">
               <input type="submit" name = "submit" class="btn btn-primary btn-lg btn-block" value="Add To Cart">
-            </form>
-            
-                
+            </form>';
+            } 
+            ?>
           </div>
           <div class="modal-footer">
               <div class="col-md-12">

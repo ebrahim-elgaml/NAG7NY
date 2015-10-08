@@ -23,18 +23,21 @@
                 <li>
                     <a href="#">Contact</a>
                 </li> -->
-                <li>
+                <!-- <li>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
                           <input type="text" class="form-control" placeholder="Search">
                         </div>
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>    
-                </li>
+                </li> -->
                 <?php 
                     if(isset($_SESSION['user'])){
 
-                        echo '<li id = "li-cart">
+                        echo '<li id = "li-profile">
+                                <p class="navbar-text"><a href="../users/" >Profile</a></p>
+                              </li>
+                              <li id = "li-cart">
                                 <p class="navbar-text"><a href="#" data-toggle="modal" data-target="#cart-modal">Cart <span class="badge" id="cart-count">'.get_cart_number().'</span> </a></p>
                               </li>
                               <li id = "li-logout">
@@ -109,8 +112,13 @@
             </ul>
           </div>
           <div class="modal-footer">
-              <div class="col-md-12">
-              <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+              <div class="col-md-12" id="cart-footer">
+                <?php 
+                  if(get_cart_number()>0){
+                   echo '<button class="btn btn-success btn-sm buy-all-cart" aria-hidden="true">Buy All</button>'; 
+                  }
+                ?>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
               </div>    
           </div>
       </div>

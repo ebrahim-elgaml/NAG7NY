@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Shop Homepage </title>
     <!-- Bootstrap Core CSS -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -93,13 +93,27 @@
                     <?php
                         $result = index_available_projects(null, null);
                         $numRows = $result->num_rows;
+                        $empty = false;
+                        $sold_out = false;
                         if ($numRows > 0) {
+                            $empty = true;
                             while ($var = $result->fetch_assoc()) {
                                 include '_project.php';
                             }
-                        }else{
+                        }
+                        $result = get_sold_out(null,null);
+                        $numRows = $result->num_rows;
+                        $sold_out = true;
+                        if ($numRows > 0) {
+                            $empty = true;
+                            while ($var = $result->fetch_assoc()) {
+                                include '_project.php';
+                            }
+                        }
+                        if($empty == false){
                             echo "<h3 style='text-align: -webkit-center;'>No Projects here at this moment but we will post soon :) </h3>";
                         }
+                    
                     ?>
 
                 </div>
@@ -133,7 +147,10 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../../js/bootstrap.min.js"></script>
-    <script src="../../js/shop-page.js"></script>
+    <div id="scripts-shops">
+        <script src="../../js/shop-page.js"></script>
+    </div>
+    
     <!-- <script src="../../js/main-load.js"></script> -->
 
 </body>

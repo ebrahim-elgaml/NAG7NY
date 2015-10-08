@@ -1,5 +1,6 @@
 <?php 
-	session_start();
+	if (!isset($_SESSION))
+		session_start();
 	include '../../db-connections/db-connection.php';  
 	function signup() {
 		global $db; 
@@ -101,16 +102,15 @@
 						$firstname = $_POST['first_name'];
 						$lastname = $_POST['last_name'];
 						$avatar = $_POST['image'];
-						
-
-						$uploads_dir = '../../uploads';
+						$credit_card = $_POST['credit_card'];
+						$uploads_dir = '../../uploads/';
 						//if (isset($_FILES['image'])) {
 							if ((($_FILES["image"]["type"] == "image/gif")
 								|| ($_FILES["image"]["type"] == "image/jpeg")
-								|| ($_FILES["image"]["type"] == "image/pjpeg")))
+								|| ($_FILES["image"]["type"] == "image/pjpeg")
+								|| ($_FILES["image"]["type"] == "image/jpg")))
 								  {
 								  	unlink('../../uploads/'.$email.'.jpg');
-						
 								    $tmp_name = $_FILES["image"]["tmp_name"];
 							        $name = $_FILES["image"]["name"];
 							        $x = 1; 
@@ -124,15 +124,16 @@
 								return;
 							} 
 						//}
-						if (isset($password)) { 
+						$user_id = $_SESSION["user"];
+						if (isset($password) && $password !='' ) { 
 							$password = sha1(sha1($password).sha1("mySalt@$#(%"));
-							$sql= "update user set first_name = '{$firstname}' ,last_name = '{$lastname}', email = '{$email}',password = '{$password}',avatar = '{$avatar}' where id= '{$_SESSION["user"]}'";
+							$sql= "update user set credit_card= '{$credit_card}' ,first_name = '{$firstname}' ,last_name = '{$lastname}', email = '{$email}',password = '{$password}',avatar = '{$avatar}' where id= '{$user_id}'";
 							//$sql = "delete from user";
 							$result = mysqli_query($db,$sql);
 							
 						}
 						else {
-							$sql= "update user set first_name = '{$firstname}' ,last_name = '{$lastname}', email = '{$email}',avatar = '{$avatar}' where id= '{$_SESSION["user"]}'";
+							$sql= "update user set credit_card= '{$credit_card}', first_name = '{$firstname}' ,last_name = '{$lastname}', email = '{$email}',avatar = '{$avatar}' where id= '{$user_id}'";
 							$result = $db->query($sql);
 						}
 						header("Location: ../projects/index.php?msg=your info has been updated");	   		
@@ -160,17 +161,7 @@
 			$user_id = $row['id'];
 			$query = "SELECT COUNT( id ) AS count FROM `cart` WHERE user_id = '{$user_id}';";
 	        $result2 = $db->query($query);
-	        $result = get_elements_in_cart();
-	        $array = array();
-	        if(isset($result)){
-                $numRows = $result->num_rows;
-                if ($numRows > 0) {
-                    while ($cart = $result->fetch_assoc()) {
-                        array_push($array,$cart);
-                    }
-                }
-            }
-			return array("success",$result2->fetch_assoc()['count'],$array);
+			return array("success",$result2->fetch_assoc()['count'],get_elements_in_cart());
 		}
 		
 	}

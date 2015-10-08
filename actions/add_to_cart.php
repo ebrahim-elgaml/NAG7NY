@@ -15,25 +15,27 @@
 	    }else{
 	    	$query = "SELECT COUNT( id ) AS count, id  FROM project_links WHERE user_id ='{$user_id}' AND project_id ='{$project_id}';";
 		    $result = $db->query($query);
-		    if(($result->fetch_assoc()['count']) == 0){
+		    //if(($result->fetch_assoc()['count']) == 0){
 		    	$query = "INSERT INTO  `cart` ( `user_id` ,  `project_id` ) VALUES ('{$user_id}',  '{$project_id}');";
 			    $result = $db->query($query);
 			    if($result){
-			    	$query = "SELECT name  FROM project WHERE id ='{$project_id}'";
+			    	$query = "SELECT name, price, id  FROM project WHERE id ='{$project_id}'";
 			    	$project_name = $db->query($query);
-			    	$project_name = $project_name->fetch_assoc()['name'];
+			    	$var = $project_name->fetch_assoc();
+			    	$project_name = $var['name'];
+			    	$project_price = $var['price'];
 			    	$query = "SELECT id  FROM cart WHERE project_id ='{$project_id}' AND user_id='{$user_id}';";
 			    	$cart_id = $db->query($query);
 			    	$cart_id = $cart_id->fetch_assoc()['id'];
 			    	$query = "INSERT INTO  `project` ( `user_id` ,  `project_id` ) VALUES ('{$user_id}',  '{$project_id}');";
 			    	$result = $db->query($query);
-			    	echo json_encode(array("success",get_cart_number(),$cart_id, $project_name));	
+			    	echo json_encode(array("success",get_cart_number(),$cart_id, $project_name,$project_price, $project_id));	
 			    }else{
 					echo json_encode(array("failure"));
 			    }	
-		    }else{
-		    	echo json_encode(array("failure"));
-		    }     
+		    // }else{
+		    // 	echo json_encode(array("failure"));
+		    // }     
 	    }
     }else{
     	echo json_encode(array("authentication"));
