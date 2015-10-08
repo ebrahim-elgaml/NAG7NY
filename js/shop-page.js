@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	$('.add').click(function(){
 		var this_element = $(this);
+
 		if(!($('.buy-cart').length == 0 && $('.remove-cart').length == 0)){
 			var id = $(this).attr('id');
 			id = id.substring(id.indexOf('-')+1);
@@ -9,9 +10,10 @@ $(document).ready(function(){
 			var number = parseInt(this_element.parent().children(".number-items").first().text().trim());
 			if(number < max_elem){
 				//alert(number);
-				this_element.parent().children(".number-items").text(" "+(number+1)+" ");
+				this_element.parent().children(".number-items").first().text(" "+(number+1)+" ");
 			}
 		}
+		return false;
 
 	});
 	$('.minus').click(function(){
@@ -257,11 +259,12 @@ $(document).ready(function(){
 							break;
 						}else{
 							found = true;
-							var modal2 = "<div id='project-"+data[0][i]['id']+"' class='modal fade' tabindex='-1' role='dialog' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button><h1 class='text-center'>"+data[0][i]['name']+"</h1></div><div class='modal-body'><span class='pull-right'><a href='#'>$ "+data[0][i]['price']+"</a></span><span><a href='#'>"+data[0][i]['count']+" Available</a></span><h3 class='form col-md-12 center-block text-decore'>"+data[0][i]['description']+"</h3><form  method='post' remote= 'true' class='cart' id="+data[0][i]['id']+"><input type='hidden' name='project_id' value="+data[0][i]['id']+"><input type='submit' name = 'submit' class='btn btn-primary btn-lg btn-block' value='Add To Cart'></form></div><div class='modal-footer'><div class='col-md-12'></div></div></div></div></div>"
+							
+							var modal2 = "<div id='project-"+data[0][i]['id']+"' class='modal fade' tabindex='-1' role='dialog' aria-hidden='true'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button><h1 class='text-center'>"+data[0][i]['name']+"</h1></div><div class='modal-body'><span class='pull-right'><a href='#'>$ "+data[0][i]['price']+"</a></span><span><a href='#' class='project-count-"+data[0][i]['id']+"'>"+data[0][i]['count']+" Available</a></span><h3 class='form col-md-12 center-block text-decore'>"+data[0][i]['description']+"</h3><form  method='post' remote= 'true' class='cart' id="+data[0][i]['id']+"><input type='hidden' name='project_id' value="+data[0][i]['id']+"><input type='submit' name = 'submit' class='btn btn-primary btn-lg btn-block' value='Add To Cart'></form></div><div class='modal-footer'><div class='col-md-12'></div></div></div></div></div>"
 							if(data[0][i]['image_link'] == null){
-						 		$('.projects').append("<div class='col-sm-4 col-lg-4 col-md-4'><div class='thumbnail'><img src='http://placehold.it/320x150' alt=''><div class='caption'><h4 class='pull-right'> $"+data[0][i]['price']+"</h4><h4><a href='#' data-toggle='modal' data-target='#project-"+data[0][i]['id']+"'>"+data[0][i]['name'].substring(0,12)+"..."+"</a></h4><p>"+data[0][i]['description'].substring(0,63)+"..."+"</p></div><div class='ratings'><p class='pull-right'>"+data[0][i]['count'] +" Availabe</p><p><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span></p></div></div></div>"+modal2);
+						 		$('.projects').append("<div class='col-sm-4 col-lg-4 col-md-4'><div class='thumbnail'><img src='http://placehold.it/320x150' alt=''><div class='caption'><h4 class='pull-right'> $"+data[0][i]['price']+"</h4><h4><a href='#' data-toggle='modal' data-target='#project-"+data[0][i]['id']+"'>"+data[0][i]['name'].substring(0,12)+"..."+"</a></h4><p>"+data[0][i]['description'].substring(0,63)+"..."+"</p></div><div class='ratings'><p class='pull-right project-count-"+data[0][i]['id']+"'>"+data[0][i]['count'] +" Availabe</p><p><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span></p></div></div></div>"+modal2);
 						 	}else{
-						 		$('.projects').append("<div class='col-sm-4 col-lg-4 col-md-4'><div class='thumbnail'><img src='"+data[0][i]['image_link']+"' alt=''><div class='caption'><h4 class='pull-right'> $"+data[0][i]['price']+"</h4><h4><a href='#'data-toggle='modal' data-target='#project-"+data[0][i]['id']+"'>"+data[0][i]['name'].substring(0,12)+"..."+"</a></h4><p>"+data[0][i]['description'].substring(0,63)+"..."+"</p></div><div class='ratings'><p class='pull-right'>"+data[0][i]['count'] +" Availabe</p><p><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span></p></div></div></div>"+modal2);
+						 		$('.projects').append("<div class='col-sm-4 col-lg-4 col-md-4'><div class='thumbnail'><img src='"+data[0][i]['image_link']+"' alt=''><div class='caption'><h4 class='pull-right'> $"+data[0][i]['price']+"</h4><h4><a href='#'data-toggle='modal' data-target='#project-"+data[0][i]['id']+"'>"+data[0][i]['name'].substring(0,12)+"..."+"</a></h4><p>"+data[0][i]['description'].substring(0,63)+"..."+"</p></div><div class='ratings'><p class='pull-right project-count-"+data[0][i]['id']+"'>"+data[0][i]['count']+" Availabe</p><p><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span><span class='glyphicon glyphicon-star'></span></p></div></div></div>"+modal2);
 
 						 	}
 						}
